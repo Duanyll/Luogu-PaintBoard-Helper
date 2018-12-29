@@ -24,6 +24,10 @@ namespace lgpb
                 crawler.Cookies.Add(CookieParser.Parse(now, "https://luogu.org"));
                 crawlers.Add(crawler);
             }
+            if(args.Length >= 2){
+                NowX = int.Parse(args[0]);
+                NowY = int.Parse(args[1]);
+            }
             string[] TextToWrite = File.ReadAllLines("data");
             Console.WriteLine("操作开始");
             foreach (var i in crawlers)
