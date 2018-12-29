@@ -37,7 +37,7 @@ namespace lgpb
                             while (TextToWrite[NowX][NowY] == ' ')
                             {
                                 NowX++;
-                                if (NowX >= TextToWrite[NowX].Length)
+                                if (NowX >= TextToWrite[NowY].Length)
                                 {
                                     NowY++;
                                     NowX = 0;
@@ -55,7 +55,7 @@ namespace lgpb
                             Console.WriteLine($"已绘制{NowX},{NowY}");
 
                             NowX++;
-                            if (NowX >= TextToWrite[NowX].Length)
+                            if (NowX >= TextToWrite[NowY].Length)
                             {
                                 NowY++;
                                 NowX = 0;
