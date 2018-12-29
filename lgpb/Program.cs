@@ -25,8 +25,9 @@ namespace lgpb
                 crawlers.Add(crawler);
             }
             if(args.Length >= 2){
-                NowX = int.Parse(args[0]);
-                NowY = int.Parse(args[1]);
+                System.Console.WriteLine(args[1]);
+                NowX = int.Parse(args[0].Trim());
+                NowY = int.Parse(args[1].Trim());
             }
             string[] TextToWrite = File.ReadAllLines("data");
             Console.WriteLine("操作开始");
@@ -38,7 +39,7 @@ namespace lgpb
                     {
                         lock (Locker)
                         {
-                            while (TextToWrite[NowX][NowY] == ' ')
+                            while (TextToWrite[NowY][NowX] == ' ')
                             {
                                 NowX++;
                                 if (NowX >= TextToWrite[NowY].Length)
