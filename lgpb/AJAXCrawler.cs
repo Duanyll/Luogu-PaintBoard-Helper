@@ -70,6 +70,10 @@ namespace lgpb
                 result = reader.ReadToEnd();
                 reader.Close();
             }
+            catch(WebException e){
+                System.Console.WriteLine(e.Message);
+                return "";
+            }
             finally
             {
             }

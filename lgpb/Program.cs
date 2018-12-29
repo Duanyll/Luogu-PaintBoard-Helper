@@ -56,6 +56,11 @@ namespace lgpb
 
                             i.Content = $"x={XStart + NowX}&y={YStart + NowY}&color=20";
                             string result = i.PostForm();
+                            if(!result.Contains("200")){
+                                System.Console.WriteLine(result);
+                                Thread.Sleep(1000);
+                                continue;
+                            }
                             Console.WriteLine(result);
                             Console.WriteLine($"已绘制{NowX},{NowY}");
 
