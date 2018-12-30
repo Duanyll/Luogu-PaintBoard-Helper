@@ -1,3 +1,5 @@
+**由于我不知道刚刚改了什么,本仓库的最新可用版本是f06ec,请自行reset**
+
 # Luogu-PaintBoard-Helper
 洛谷冬日滑板辅助脚本
 
