@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/lgpb/bin/Debug/netcoreapp2.1/lgpb.dll",
-            "args": [],
+            "args": ["0","0"],
             "cwd": "${workspaceFolder}/lgpb",
             "console": "externalTerminal",
             "stopAtEntry": false,
