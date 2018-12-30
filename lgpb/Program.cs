@@ -33,7 +33,7 @@ namespace lgpb
             return true;
         }
 
-        static bool MoveNext(int w,int h)
+        static bool MoveNext(int w, int h)
         {
             NowX++;
             if (NowX >= w)
@@ -57,7 +57,7 @@ namespace lgpb
         static Rgba32 LoadColorFromString(string str)
         {
             var vs = str.Substring(4, str.Length - 5).Replace(" ", "").Split(',');
-            return new Rgba32(float.Parse(vs[0])/256, float.Parse(vs[1])/256, float.Parse(vs[2])/256);
+            return new Rgba32(float.Parse(vs[0]) / 256, float.Parse(vs[1]) / 256, float.Parse(vs[2]) / 256);
         }
 
         static int GetColorID(Rgba32 col)
@@ -65,7 +65,7 @@ namespace lgpb
             int mnval = int.MaxValue, mxpos = 0;
             for (int i = 0; i < Colors.Count; i++)
             {
-                int dis = Math.Abs(Colors[i].R - col.R) + Math.Abs(Colors[i].G - col.G) + Math.Abs(Colors[i].B - col.B);
+                int dis = Math.Abs(Colors[i].R - col.R) * Math.Abs(Colors[i].R - col.R) + Math.Abs(Colors[i].G - col.G) * Math.Abs(Colors[i].G - col.G) + Math.Abs(Colors[i].B - col.B) * Math.Abs(Colors[i].B - col.B);
                 if (dis < mnval)
                 {
                     mxpos = i;
@@ -75,8 +75,10 @@ namespace lgpb
             return mxpos;
         }
 
+        static int Count = 0;
         static bool Draw(AJAXCrawler crawler, int X, int Y, int Color)
         {
+            Count++;
             crawler.Content = $"x={X}&y={Y}&color={Color}";
             string result = crawler.PostForm();
             System.Console.WriteLine(result);
@@ -103,6 +105,7 @@ namespace lgpb
                                 if (!MoveNext())
                                 {
                                     System.Console.WriteLine("操作完成");
+                                    System.Console.WriteLine(Count);
                                     return;
                                 }
                             }
@@ -120,12 +123,14 @@ namespace lgpb
                             if (!MoveNext())
                             {
                                 System.Console.WriteLine("操作完成");
+                                System.Console.WriteLine(Count);
                                 return;
                             }
                         }
                         Thread.Sleep(32000);
                     }
                     Console.WriteLine("操作完成");
+                    System.Console.WriteLine(Count);
                 });
                 th.Start();
             }
@@ -148,17 +153,23 @@ namespace lgpb
                         Thread.Sleep(0);
                         lock (Locker)
                         {
-                            if (Draw(i, XStart + NowX, YStart + NowY, GetColorID(img[XStart + NowX,YStart + NowY])))
+                            if (GetColorID(img[NowX, NowY]) != 1 && GetColorID(img[NowX, NowY]) != 2)
                             {
-                                Console.WriteLine($"已绘制{NowX},{NowY}");
-                            }
-                            else
-                            {
-                                Thread.Sleep(1000);
+                                if (Draw(i, XStart + NowX, YStart + NowY, GetColorID(img[NowX, NowY])))
+                                {
+                                    Console.WriteLine($"已绘制{NowX},{NowY}");
+                                }
+                                else
+                                {
+                                    Thread.Sleep(1000);
+                                    continue;
+                                }
+                            }else{
+                                MoveNext(img.Width, img.Height);
                                 continue;
                             }
 
-                            if (!MoveNext(img.Width,img.Height))
+                            if (!MoveNext(img.Width, img.Height))
                             {
                                 System.Console.WriteLine("操作完成");
                                 return;
