@@ -9,8 +9,8 @@ namespace lgpb
     {
         static int NowX = 0;
         static int NowY = 0;
-        const int XStart = 739;
-        const int YStart = 235;
+        const int XStart =310 ;
+        const int YStart =337 ;
         private static object Locker = new object();
         static void Main(string[] args)
         {
@@ -37,6 +37,7 @@ namespace lgpb
                 {
                     while (NowY < TextToWrite.Length)
                     {
+                        Thread.Sleep(0);
                         lock (Locker)
                         {
                             while (TextToWrite[NowY][NowX] == ' ')
@@ -54,7 +55,12 @@ namespace lgpb
                                 }
                             }
 
-                            i.Content = $"x={XStart + NowX}&y={YStart + NowY}&color=20";
+                            if(TextToWrite[NowY][NowX] == '$')
+                                i.Content = $"x={XStart + NowX}&y={YStart + NowY}&color=9";
+                            else
+                            {
+                                i.Content = $"x={XStart + NowX}&y={YStart + NowY}&color=1";
+                            }
                             string result = i.PostForm();
                             if(!result.Contains("200")){
                                 System.Console.WriteLine(result);
