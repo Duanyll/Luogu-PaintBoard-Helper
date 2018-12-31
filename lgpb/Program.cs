@@ -13,7 +13,8 @@ namespace lgpb
         static int YStart = 0;
         static string[] TextToWrite;
         private static object Locker = new object();
-        static bool MoveNext(){
+        static bool MoveNext()
+        {
             NowX++;
             if (NowX >= TextToWrite[NowY].Length)
             {
@@ -28,7 +29,8 @@ namespace lgpb
             return true;
         }
 
-        static bool Draw(AJAXCrawler crawler,int X,int Y,int Color){
+        static bool Draw(AJAXCrawler crawler, int X, int Y, int Color)
+        {
             crawler.Content = $"x={X}&y={Y}&color={Color}";
             string result = crawler.PostForm();
             System.Console.WriteLine(result);
@@ -59,6 +61,7 @@ namespace lgpb
             {
                 Thread th = new Thread(() =>
                 {
+                    int RetryCount = 0;
                     while (NowY < TextToWrite.Length)
                     {
                         Thread.Sleep(0);
@@ -66,20 +69,44 @@ namespace lgpb
                         {
                             while (TextToWrite[NowY][NowX] == ' ')
                             {
-                                if(!MoveNext()){
+                                if (!MoveNext())
+                                {
                                     System.Console.WriteLine("操作完成");
                                     return;
                                 }
                             }
 
-                            if(Draw(i,XStart+NowX,YStart+NowY,9)){
+                            int Color = 0;
+                            switch (TextToWrite[NowY][NowX])
+                            {
+                                case '_':
+                                    Color = 1;
+                                    break;
+                                case '/':
+                                    Color = 7;
+                                    break;
+                                case '\\':
+                                    Color = 9;
+                                    break;
+                            }
+                            if (Draw(i, XStart + NowX, YStart + NowY, Color))
+                            {
                                 Console.WriteLine($"已绘制{NowX},{NowY}");
-                            }else{
+                                RetryCount = 0;
+                            }
+                            else
+                            {
+                                RetryCount++;
                                 Thread.Sleep(1000);
+                                if(RetryCount > 35){
+                                    System.Console.WriteLine("提交失败次数过多,已终止本线程.");
+                                    return;
+                                }
                                 continue;
-                            }                            
+                            }
 
-                            if(!MoveNext()){
+                            if (!MoveNext())
+                            {
                                 System.Console.WriteLine("操作完成");
                                 return;
                             }
