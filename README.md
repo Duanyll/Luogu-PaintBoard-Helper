@@ -1,3 +1,5 @@
+# 请去 [新版](https://github.com/Duanyll/LuoguPaintboardPro)
+
 # Luogu-PaintBoard-Helper
 洛谷冬日滑板辅助脚本
 
